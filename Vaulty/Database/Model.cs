@@ -1,66 +1,106 @@
-﻿using Google.Protobuf.WellKnownTypes;
+﻿using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Vaulty.Database
 {
-    internal class Model
+    internal class Model : Server
     {
+
+        private MySqlDataReader _DataReader;
         private List<string> _DataFields = new List<string>();
         private Dictionary<string, Object> Data = new Dictionary<string, object>();
-        protected static string Table {  get; set; }
-        protected static Dictionary<string, Object> Fields = new Dictionary<string, Object>();
+        private string _Table;
 
-        static void InitModel(string table, Dictionary<string, Object> fields)
+        internal Model(string table, string qParams)
         {
-            Table = table;
-            Fields = fields;
+            _Table = table;
+            _Query = qParams + " ";
         }
 
-        Model()
+        protected List<Dictionary<string, Object>> GetRecords()
         {
-            string query = "insert into " + Table + " (";
-            List<string> fields = new List<string>(Fields.Keys);
-            List<string> values = new List<string>(Fields.Values);
-            for (int i = 0; i < Fields.Count(); i++)
+            List<Dictionary<string, Object>> data = new List<Dictionary<string, Object>>();
+            int i = 0;
+            Test();
+
+            _Query = $"select * from {_Table} {_Query}";
+
+            Exec();
+
+            while (_DataReader.Read())
             {
-                query += fields[i];
-                if (i < Fields.Count - 1)
+                Dictionary<string, Object> record = new Dictionary<string, Object>();
+                for (int i = 0; i < _DataReader.FieldCount; i++)
                 {
-                    query += ",";
+                    record.Add(_DataReader.GetName(i), _DataReader[i]);
                 }
+                data.Add(record);
+                i++;
             }
 
-            query += ") values (";
-            for (int i = 0; i < Fields.Count(); i++)
-            {
-                query += values[i];
-                if (i < Fields.Count - 1)
-                {
-                    query += ",";
-                }
-            }
+            _Conn.Close();
+            return data;
         }
 
-        static Builder Sort(string field, string type = "asc")
+        void Update()
         {
-            return new Builder(Table, "order by " + field + " " + type);
+            Test();
+
+            _Query = $"update table {_Table} {_Query}";
+
+            Exec();
+
+            while (_DataReader.Read()) { }
         }
 
-        static Builder Where(string field, string value)
+        void Delete()
         {
-            return new Builder(Table, "where " + field + " = '" + value + "'");
+            Test();
+
+            _Query = $"delete from {_Table} {_Query}";
+
+            Exec();
+            while (_DataReader.Read()) { }
         }
 
-        static Builder Where(string field, string condOperator, string value)
+        Model Sort(string field, string type = "asc")
         {
-            return new Builder(Table, "where " + field + " " + condOperator + " '" + value + "'");
+            _Query += $" order by {field} {type}";
+            return this;
+        }
+
+        Model Where(string field, string value)
+        {
+            _Query += $" and {field} = '{value}'";
+            return this;
+        }
+
+        Model Where(string field, string condOperator, string value)
+        {
+            _Query += $" and {field} {condOperator} '{value}'";
+            return this;
+        }
+
+        Model OrWhere(string field, string value)
+        {
+            _Query += $" or {field} = '{value}'";
+            return this;
+        }
+
+        Model OrWhere(string field, string condOperator, string value)
+        {
+            _Query += $" or {field} {condOperator} '{value}'";
+            return this;
         }
     }
 }
