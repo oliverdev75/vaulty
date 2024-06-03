@@ -11,17 +11,17 @@ namespace Vaulty.Database.Models
 {
     internal class User : Model
     {
-        private static string Table = "users";
-        private static Dictionary<string , Object> Fields = new Dictionary<string , Object>();
+        internal override string _Table { get; set; } = "users";
+        internal override Dictionary<string , Object> _Fields { get; set; } = new Dictionary<string , Object>();
 
-        string Name;
-        string Username;
-        string Password;
-        string Img;
-        string Lang;
-        List<Identity> identities;
+        internal string Name;
+        internal string Username;
+        internal string Password;
+        internal string Img;
+        internal string Lang;
+        internal List<Identity> identities;
         
-        User(
+        internal User(
             string name = null,
             string username = null,
             string password = null,
@@ -44,8 +44,8 @@ namespace Vaulty.Database.Models
                 Fields["password"] = password;
                 Fields["img"] = img;
                 Fields["lang"] = lang;
-                InitModel(Table , Fields);
-                Insert();
+                Model instance = new Model();
+                instance.Insert(Fields);
             }
             else
             {
@@ -57,21 +57,23 @@ namespace Vaulty.Database.Models
             }
         }
 
-        void Save()
+        internal void Save()
         {
             Fields["name"] = Name;
             Fields["username"] = Username;
             Fields["password"] = Password;
             Fields["img"] = Img;
             Fields["lang"] = Lang;
-            InitModel(Table, Fields);
-            Insert();
+            Model instance = new Model();
+            instance.Insert(Fields);
         }
 
 
-        internal List<User> Get()
+        /*internal List<User> Get()
         {
-            this.GetRecords();
-        }
+            List<User> records = this.GetRecords();
+
+            return records;
+        }*/
     }
 }

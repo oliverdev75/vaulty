@@ -10,22 +10,23 @@ namespace Vaulty.Database.Models
 {
     internal class Identity : Model
     {
-        private static string Table = "identities";
-        private static Dictionary<string , Object> Fields = new Dictionary<string , Object>();
+        internal override string _Table { get; set; } = "identities";
+        internal override Dictionary<string, Object> _Fields { get; set; }
 
-        string Title;
-        string Username;
-        string Password;
-        string Website;
-        string Note;
+        string title;
+        string username;
+        string password;
+        string website;
+        string note;
         Group group;
         
-        Identity(
+        internal Identity(
             string title = null,
             string username = null,
             string password = null,
             string website = null,
-            string note = null
+            string note = null,
+            bool save = true
             )
         {
             if (
@@ -33,27 +34,26 @@ namespace Vaulty.Database.Models
                 username != null &&
                 password != null &&
                 website != null &&
-                note != null
+                note != null &&
+                save
                 )
             {
-                Fields["title"] = title;
-                Fields["username"] = username;
-                Fields["password"] = password;
-                Fields["website"] = website;
-                Fields["note"] = note;
-                InitModel(Table , Fields);
+                _Fields["title"] = title;
+                _Fields["username"] = username;
+                _Fields["password"] = password;
+                _Fields["website"] = website;
+                _Fields["note"] = note;
                 Insert();
             }
         }
 
-        void Save()
+        internal void Save()
         {
-            Fields["title"] = Title;
-            Fields["username"] = Username;
-            Fields["password"] = Password;
-            Fields["website"] = Website;
-            Fields["note"] = Note;
-            InitModel(Table, Fields);
+            _Fields["title"] = title;
+            _Fields["username"] = username;
+            _Fields["password"] = password;
+            _Fields["website"] = website;
+            _Fields["note"] = note;
             Insert();
         }
     }

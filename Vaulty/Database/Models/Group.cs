@@ -10,47 +10,35 @@ namespace Vaulty.Database.Models
 {
     internal class Group : Model
     {
-        private static string Table = "identities";
-        private static Dictionary<string , Object> Fields = new Dictionary<string , Object>();
+        internal override string _Table { get; set; } = "groups";
+        internal override Dictionary<string , Object> _Fields { get; set; } = new Dictionary<string , Object>();
 
-        string Name;
-        string Icon;
-        List<Identity> identities;
+        internal string Name;
+        internal string Icon;
+        internal List<Identity> identities;
         
-        Identity(
-            string title = null,
-            string username = null,
-            string password = null,
-            string website = null,
-            string note = null
+        internal Group(
+            string name = null,
+            int icon = 0,
+            bool save = true
             )
         {
             if (
-                title != null &&
-                username != null &&
-                password != null &&
-                website != null &&
-                note != null
+                name != null &&
+                icon > -1 &&
+                save
                 )
             {
-                Fields["title"] = title;
-                Fields["username"] = username;
-                Fields["password"] = password;
-                Fields["website"] = website;
-                Fields["note"] = note;
-                InitModel(Table , Fields);
+                _Fields["name"] = name;
+                _Fields["icon"] = icon;
                 Insert();
             }
         }
 
-        void Save()
+        internal void Save()
         {
-            Fields["title"] = Title;
-            Fields["username"] = Username;
-            Fields["password"] = Password;
-            Fields["website"] = Website;
-            Fields["note"] = Note;
-            InitModel(Table, Fields);
+            _Fields["name"] = Name;
+            _Fields["icon"] = Icon;
             Insert();
         }
     }

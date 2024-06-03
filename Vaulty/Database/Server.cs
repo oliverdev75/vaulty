@@ -1,39 +1,55 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Vaulty.Database.Models;
+using Vaulty.Exceptions;
 
 namespace Vaulty.Database
 {
-    internal class Server
+    internal abstract class Server
     {
-        public struct ConnProps
+        [Serializable]
+        private struct ConnProps
         {
-            public string host;
-            public string port;
-            public string username;
-            public string password;
-            public string db;
+            [JsonPropertyName("host")]
+            public string Host { get; set; }
+
+            [JsonPropertyName("port")]
+            public string Port { get; set; }
+
+            [JsonPropertyName("username")]
+            public string Username { get; set; }
+
+            [JsonPropertyName("password")]
+            public string Password { get; set; }
+
+            [JsonPropertyName("db")]
+            public string Db { get; set; }
         }
 
+        private const string PATH = "C:\\Users\\ovrsc\\source\\repos\\twister91\\vaulty\\Vaulty\\bin\\Debug\\";
         private const string CONFIG_FILE = "dbconfig.json";
         private string _ConnString;
         protected MySqlConnection _Conn;
-        protected string _Query;
+        protected abstract string _Query { get; set; }
         protected MySqlCommand _QueryExec;
-        protected MySqlDataReader _DataReader;
+        protected abstract MySqlDataReader _DataReader { get; set; }
 
         protected void SetupConfig()
         {
             string configFile = File.ReadAllText(CONFIG_FILE);
             ConnProps config = JsonSerializer.Deserialize<ConnProps>(configFile);
-            _ConnString = $"server={config.host},port={config.port},user={config.username}," +
-                $"password={config.password},database={config.db}";
+            _ConnString = $"server={config.Host},port={config.Port},user={config.Username}," +
+                $"password={config.Password},database={config.Db}";
         }
 
-        internal static void setConfig(
+        internal static void SetConfig(
                 string host,
                 string port,
                 string username,
@@ -41,21 +57,52 @@ namespace Vaulty.Database
                 string db
             )
         {
+            ConnProps connProps = new ConnProps
+            {
+                Host = host,
+                Port = port,
+                Username = username,
+                Password = password,
+                Db = db
+            };
 
+            string connData = JsonSerializer.Serialize(connProps);
+            File.WriteAllText(CONFIG_FILE, connData);
         }
 
-        protected bool Test()
+        internal static Dictionary<string, string> GetConfig()
+        {
+            string configFile = File.ReadAllText(PATH + CONFIG_FILE);
+            ConnProps jsonConfig = JsonSerializer.Deserialize<ConnProps>(configFile);
+            return new Dictionary<string, string>
+            {
+                { "host", jsonConfig.Host },
+                { "port", jsonConfig.Port },
+                { "username", jsonConfig.Username },
+                { "password", jsonConfig.Password },
+                { "db", jsonConfig.Db }
+            };
+        }
+
+        internal void Test()
         {
             SetupConfig();
             try
             {
                 _Conn = new MySqlConnection(_ConnString);
                 _Conn.Open();
-                return true;
             }
             catch (Exception)
             {
-                return false;
+                throw new DBConnException();
+            }
+        }
+
+        internal void CloseConn()
+        {
+            if (_Conn != null)
+            {
+                _Conn.Close();
             }
         }
 

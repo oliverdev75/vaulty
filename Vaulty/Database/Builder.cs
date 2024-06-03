@@ -1,40 +1,58 @@
-﻿using Google.Protobuf;
-using Google.Protobuf.WellKnownTypes;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Reflection;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Vaulty.Database
 {
-    internal abstract class Model : Server
+    internal class Builder : Server
     {
+        protected override string _Query { get; set; }
+        protected override MySqlDataReader _DataReader { get; set; }
+        private List<string> _DataFields = new List<string>();
+        private string Table { get; set; }
+        private Dictionary<string, Object> Fields { get; set; } = new Dictionary<string, Object>();
 
-        
-
-        internal Model(string qParams = "")
+        internal Builder(string table, Dictionary<string, Object> fields)
         {
-            _Query = qParams + " ";
+            Table = table;
+            Fields = fields;
         }
 
-        protected List<Dictionary<string, Object>> GetRecords()
+        protected List<Dictionary<string, object>> Get(string[] fields = null)
         {
-            List<Dictionary<string, Object>> data = new List<Dictionary<string, Object>>();
+            List<Dictionary<string, object>> data = new List<Dictionary<string, object>>();
             Test();
+            if (fields == null)
+            {
+                fields[0] = "*";
+            }
 
-            _Query = $"select * from {_Table} {_Query}";
+            _Query = "select ";
+            string[] queryParams = new string[fields.Length];
+
+            foreach (string field in fields)
+            {
+                queryParams[queryParams.Length] = field;
+            }
+                
+            _Query += $"{String.Join(",", queryParams)} from {Table} {_Query}";
 
             Exec();
 
+            Dictionary<string, object> record;
+            object entity;
+            Type entityType;
+            PropertyInfo[] entityAttribs;
             while (_DataReader.Read())
             {
-                Dictionary<string, Object> record = new Dictionary<string, Object>();
+                entityType = _DataReader.GetType();
+                entity = Activator.CreateInstance();
+                entityType = entity.GetType();
+                entityAttribs = PropertyInfo.Get
                 for (int i = 0; i < _DataReader.FieldCount; i++)
                 {
                     record.Add(_DataReader.GetName(i), _DataReader[i]);
@@ -98,51 +116,31 @@ namespace Vaulty.Database
             while (_DataReader.Read()) { }
         }
 
-        internal static Model PrepSort(string field, string type = "asc")
-        {
-            return new Model($" order by {field} {type}");
-        }
-
-        internal static Model PrepWhere(string field, string condOperator, string value)
-        {
-            return new Model($" and {field} {condOperator} '{value}'");
-        }
-
-        internal static Model PrepOrWhere(string field, string value)
-        {
-            return new Model($" or {field} = '{value}'");
-        }
-
-        internal static Model PrepOrWhere(string field, string condOperator, string value)
-        {
-            return new Model($" or {field} {condOperator} '{value}'");
-        }
-
-        internal Model Sort(string field, string type = "asc")
+        internal Builder Sort(string field, string type = "asc")
         {
             _Query += $" order by {field} {type}";
             return this;
         }
 
-        internal Model Where(string field, string value)
+        internal Builder Where(string field, string value)
         {
             _Query += $" and {field} = '{value}'";
             return this;
         }
 
-        internal Model Where(string field, string condOperator, string value)
+        internal Builder Where(string field, string condOperator, string value)
         {
             _Query += $" and {field} {condOperator} '{value}'";
             return this;
-        }        
+        }
 
-        internal Model OrWhere(string field, string value)
+        internal Builder OrWhere(string field, string value)
         {
             _Query += $" or {field} = '{value}'";
             return this;
         }
 
-        internal Model OrWhere(string field, string condOperator, string value)
+        internal Builder OrWhere(string field, string condOperator, string value)
         {
             _Query += $" or {field} {condOperator} '{value}'";
             return this;
