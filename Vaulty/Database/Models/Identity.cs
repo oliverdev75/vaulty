@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Xml.Linq;
+using Mysqlx.Crud;
 
 namespace Vaulty.Database.Models
 {
     internal class Identity : Model
     {
-        internal override string _Table { get; set; } = "identities";
-        internal override Dictionary<string, Object> _Fields { get; set; }
+        internal override string Table { get; set; } = "identities";
+        internal override Dictionary<string, Object> Fields { get; set; } = new Dictionary<string, Object>();
 
         string title;
         string username;
@@ -38,22 +39,22 @@ namespace Vaulty.Database.Models
                 save
                 )
             {
-                _Fields["title"] = title;
-                _Fields["username"] = username;
-                _Fields["password"] = password;
-                _Fields["website"] = website;
-                _Fields["note"] = note;
+                Fields["title"] = title;
+                Fields["username"] = username;
+                Fields["password"] = password;
+                Fields["website"] = website;
+                Fields["note"] = note;
                 Insert();
             }
         }
 
         internal void Save()
         {
-            _Fields["title"] = title;
-            _Fields["username"] = username;
-            _Fields["password"] = password;
-            _Fields["website"] = website;
-            _Fields["note"] = note;
+            Fields["title"] = title;
+            Fields["username"] = username;
+            Fields["password"] = password;
+            Fields["website"] = website;
+            Fields["note"] = note;
             Insert();
         }
     }

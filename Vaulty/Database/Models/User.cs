@@ -11,8 +11,8 @@ namespace Vaulty.Database.Models
 {
     internal class User : Model
     {
-        internal override string _Table { get; set; } = "users";
-        internal override Dictionary<string , Object> _Fields { get; set; } = new Dictionary<string , Object>();
+        internal override string Table { get; set; } = "users";
+        internal override Dictionary<string , Object> Fields { get; set; } = new Dictionary<string , Object>();
 
         internal string Name;
         internal string Username;
@@ -44,8 +44,7 @@ namespace Vaulty.Database.Models
                 Fields["password"] = password;
                 Fields["img"] = img;
                 Fields["lang"] = lang;
-                Model instance = new Model();
-                instance.Insert(Fields);
+                Insert();
             }
             else
             {
@@ -64,16 +63,7 @@ namespace Vaulty.Database.Models
             Fields["password"] = Password;
             Fields["img"] = Img;
             Fields["lang"] = Lang;
-            Model instance = new Model();
-            instance.Insert(Fields);
+            Insert();
         }
-
-
-        /*internal List<User> Get()
-        {
-            List<User> records = this.GetRecords();
-
-            return records;
-        }*/
     }
 }

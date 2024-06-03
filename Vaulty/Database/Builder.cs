@@ -22,9 +22,9 @@ namespace Vaulty.Database
             Fields = fields;
         }
 
-        protected List<Dictionary<string, object>> Get(string[] fields = null)
+        protected List<object> Get(string[] fields = null)
         {
-            List<Dictionary<string, object>> data = new List<Dictionary<string, object>>();
+            List<object> data = new List<object>();
             Test();
             if (fields == null)
             {
@@ -43,21 +43,17 @@ namespace Vaulty.Database
 
             Exec();
 
-            Dictionary<string, object> record;
             object entity;
-            Type entityType;
             PropertyInfo[] entityAttribs;
             while (_DataReader.Read())
             {
-                entityType = _DataReader.GetType();
-                entity = Activator.CreateInstance();
-                entityType = entity.GetType();
-                entityAttribs = PropertyInfo.Get
+                entity = Activator.CreateInstance(Type.GetType(Table));
+                entityAttribs = entity.GetType().GetProperties();
                 for (int i = 0; i < _DataReader.FieldCount; i++)
                 {
-                    record.Add(_DataReader.GetName(i), _DataReader[i]);
+                    entityAttribs[i].SetValue(entity, _DataReader[i]);
                 }
-                data.Add(record);
+                data.Add(entity);
             }
 
             _Conn.Close();
@@ -66,9 +62,9 @@ namespace Vaulty.Database
 
         internal void Insert()
         {
-            List<string> fields = new List<string>(_Fields.Keys);
-            List<Object> values = new List<Object>(_Fields.Values);
-            _Query = $"insert into {_Table} (";
+            List<string> fields = new List<string>(Fields.Keys);
+            List<Object> values = new List<Object>(Fields.Values);
+            _Query = $"insert into {Table} (";
 
             for (int i = 0; i < fields.Count; i++)
             {
@@ -116,7 +112,7 @@ namespace Vaulty.Database
             while (_DataReader.Read()) { }
         }
 
-        internal Builder Sort(string field, string type = "asc")
+        internal Builder OrderBy(string field, string type = "asc")
         {
             _Query += $" order by {field} {type}";
             return this;
