@@ -12,9 +12,12 @@ namespace Vaulty.Database
     {
         protected override string _Query { get; set; }
         protected override MySqlDataReader _DataReader { get; set; }
-        private List<string> _DataFields = new List<string>();
         private string Table { get; set; }
         private Dictionary<string, Object> Fields { get; set; } = new Dictionary<string, Object>();
+        private List<string> strictConditions = new List<string>();
+        private List<string> flexibleConditions = new List<string>();
+        private List<string> backShape = new List<string>();
+        private List<string> setParams = new List<string>();
 
         internal Builder(string table, Dictionary<string, Object> fields)
         {
@@ -22,38 +25,54 @@ namespace Vaulty.Database
             Fields = fields;
         }
 
-        protected List<object> Get(string[] fields = null)
+        public override string ToString()
         {
-            List<object> data = new List<object>();
+            Smooth();
+            return _Query;
+        }
+
+        internal List<Dictionary<string, object>> Get(List<string> fields = null)
+        {
+            List<Dictionary<string, object>> data = new List<Dictionary<string, object>>();
             Test();
             if (fields == null)
             {
-                fields[0] = "*";
+                fields = new List<string>();
+                fields.Add("*");
             }
 
-            _Query = "select ";
-            string[] queryParams = new string[fields.Length];
 
-            foreach (string field in fields)
+            string subject = "select";
+            if (fields.Count == 1)
             {
-                queryParams[queryParams.Length] = field;
+                subject += $" {fields[0]} from {Table} {_Query}";
+            } else
+            {
+                subject += $" {String.Join(",", fields)} from {Table} {_Query}";
             }
-                
-            _Query += $"{String.Join(",", queryParams)} from {Table} {_Query}";
-
+            Smooth(subject);
             Exec();
 
-            object entity;
-            PropertyInfo[] entityAttribs;
+            //object entity;
+            //PropertyInfo[] entityAttribs;
+            Dictionary<string, object> row = null;
             while (_DataReader.Read())
             {
-                entity = Activator.CreateInstance(Type.GetType(Table));
+                /*entity = Activator.CreateInstance(Type.GetType("Vaulty.Database.Models.User"));
                 entityAttribs = entity.GetType().GetProperties();
+                i = 0;
+                foreach (PropertyInfo attrib in entityAttribs)
+                {
+                    attrib.SetValue(entity, _DataReader[i]);
+                    i++;
+                }
+                Console.WriteLine(entity);*/
+                row = new Dictionary<string, object>();
                 for (int i = 0; i < _DataReader.FieldCount; i++)
                 {
-                    entityAttribs[i].SetValue(entity, _DataReader[i]);
+                    row.Add(_DataReader.GetName(i), _DataReader[_DataReader.GetName(i)]);
                 }
-                data.Add(entity);
+                data.Add(row);
             }
 
             _Conn.Close();
@@ -79,7 +98,7 @@ namespace Vaulty.Database
 
             for (int i = 0; i < values.Count; i++)
             {
-                _Query += values[i];
+                _Query += $"'{values[i]}'";
                 if (i < values.Count - 1)
                 {
                     _Query += ",";
@@ -94,52 +113,89 @@ namespace Vaulty.Database
         internal void Update()
         {
             Test();
-
-            _Query = $"update table {_Table} {_Query}";
-
+            Smooth($"update table {Table}");
             Exec();
-
             while (_DataReader.Read()) { }
         }
 
         internal void Delete()
         {
             Test();
-
-            _Query = $"delete from {_Table} {_Query}";
-
+            Smooth("delete from ");
             Exec();
             while (_DataReader.Read()) { }
         }
 
+        internal Builder Set(string field, string value, string dataType = "string")
+        {
+            if (dataType.Equals("string"))
+            {
+                setParams.Add($"{field} = '{value}'");
+            }
+            else
+            {
+                setParams.Add($"{field} = {value}");
+            }
+
+            return this;
+        }
+
         internal Builder OrderBy(string field, string type = "asc")
         {
-            _Query += $" order by {field} {type}";
+            backShape.Add($" order by {field} {type}");
             return this;
         }
 
         internal Builder Where(string field, string value)
         {
-            _Query += $" and {field} = '{value}'";
+            strictConditions.Add($"{field} = '{value}'");
             return this;
         }
 
         internal Builder Where(string field, string condOperator, string value)
         {
-            _Query += $" and {field} {condOperator} '{value}'";
+            strictConditions.Add($"{field} {condOperator} '{value}'");
             return this;
         }
 
         internal Builder OrWhere(string field, string value)
         {
-            _Query += $" or {field} = '{value}'";
+            flexibleConditions.Add($"{field} = '{value}'");
             return this;
         }
 
         internal Builder OrWhere(string field, string condOperator, string value)
         {
-            _Query += $" or {field} {condOperator} '{value}'";
+            flexibleConditions.Add($"{field} {condOperator} '{value}'");
             return this;
+        }
+
+        private void Smooth(string subject = "")
+        {
+            _Query = subject;
+
+            string ands = "";
+            string ors = "";
+
+            if (strictConditions.Count > 0)
+            {
+                ands = string.Join(" and ", strictConditions);
+            }
+
+            if (flexibleConditions.Count > 0)
+            {
+                ors = string.Join(" or ", flexibleConditions);
+            }
+            
+            if (strictConditions.Count > 0 || flexibleConditions.Count > 0)
+            {
+                _Query += $" where {ands} {ors}";
+            }
+
+            if (backShape.Count > 0)
+            {
+                _Query += " " + string.Join("", backShape);
+            }
         }
     }
 }

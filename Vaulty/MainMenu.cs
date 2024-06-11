@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Vaulty.Account;
 
 namespace Vaulty
 {
@@ -17,15 +18,22 @@ namespace Vaulty
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void BtnDBSettings_Click(object sender, EventArgs e)
         {
-            Form dbSettings = new DBSettings();
+            DBSettings dbSettings = new DBSettings();
             dbSettings.Show();
+        }
+
+        private void btnSignup_Click(object sender, EventArgs e)
+        {
+            Signup signup = new Signup();
+            signup.Show();
+        }
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            Login login = new Login();
+            login.Show();
         }
     }
 }

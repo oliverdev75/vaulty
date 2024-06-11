@@ -1,4 +1,5 @@
-﻿using Org.BouncyCastle.Bcpg;
+﻿using Google.Protobuf.WellKnownTypes;
+using Org.BouncyCastle.Bcpg;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -48,8 +49,7 @@ namespace Vaulty
                 if (field.Text.Equals("") && !field.Tag.Equals("portField"))
                 {
                     save = false;
-                    lblTestResult.ForeColor = Color.Red;
-                    lblTestResult.Text = "ERROR: Except of port all fields must be filled to save.";
+                    MessageBox.Show("Except of port all fields must be filled to save.", "Fields Error");
                 }
             }
 
@@ -79,13 +79,20 @@ namespace Vaulty
         {
             try
             {
-                Server tmpSrv = new Server();
-                tmpSrv.Test();
-                tmpSrv.CloseConn();
+                Server.Test(
+                    this.txtHostField.Text,
+                    this.txtPortField.Text,
+                    this.txtUsernameField.Text,
+                    this.txtPasswordField.Text,
+                    this.txtDBField.Text
+                    );
+                Server.CloseConn();
+                this.lblTestResult.ForeColor = Color.Green;
                 this.lblTestResult.Text = "OK: connection succesful.";
             }
             catch (DBConnException)
             {
+                this.lblTestResult.ForeColor = Color.Red;
                 this.lblTestResult.Text = "ERROR: connection not successful.";
             }
         }
@@ -95,7 +102,7 @@ namespace Vaulty
             this.txtHostField.Text = "localhost";
             this.txtPortField.Text = "3306";
             this.txtUsernameField.Text = "vaulty";
-            this.txtPasswordField.Text = "vaulty";
+            this.txtPasswordField.Text = "P@ssw0rd";
             this.txtDBField.Text = "vaulty";
         }
     }

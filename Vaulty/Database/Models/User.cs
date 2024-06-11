@@ -11,16 +11,17 @@ namespace Vaulty.Database.Models
 {
     internal class User : Model
     {
-        internal override string Table { get; set; } = "users";
-        internal override Dictionary<string , Object> Fields { get; set; } = new Dictionary<string , Object>();
+        internal static string table = "users";
+        internal static Dictionary<string , Object> fields = new Dictionary<string , Object>();
 
-        internal string Name;
-        internal string Username;
-        internal string Password;
-        internal string Img;
-        internal string Lang;
-        internal List<Identity> identities;
+        public string name;
+        public string username;
+        public string password;
+        public string img;
+        public string lang;
+        public List<Identity> identities;
         
+        public User() { }
         internal User(
             string name = null,
             string username = null,
@@ -39,30 +40,40 @@ namespace Vaulty.Database.Models
                 save
                 )
             {
-                Fields["name"] = name;
-                Fields["username"] = username;
-                Fields["password"] = password;
-                Fields["img"] = img;
-                Fields["lang"] = lang;
+                fields["name"] = name;
+                fields["username"] = username;
+                fields["password"] = password;
+                fields["img"] = img;
+                fields["lang"] = lang;
                 Insert();
             }
             else
             {
-                Name = name;
-                Username = username;
-                Password = password;
-                Img = img;
-                Lang = lang;
+                name = name;
+                username = username;
+                password = password;
+                img = img;
+                lang = lang;
             }
+        }
+
+        internal static void Setup()
+        {
+            Meta.SetMeta(table, fields);
+        }
+
+        public override string ToString()
+        {
+            return $"Name: {name}, Username: {username}";
         }
 
         internal void Save()
         {
-            Fields["name"] = Name;
-            Fields["username"] = Username;
-            Fields["password"] = Password;
-            Fields["img"] = Img;
-            Fields["lang"] = Lang;
+            fields["name"] = name;
+            fields["username"] = username;
+            fields["password"] = password;
+            fields["img"] = img;
+            fields["lang"] = lang;
             Insert();
         }
     }

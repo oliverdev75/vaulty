@@ -5,18 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Xml.Linq;
+using System.Drawing;
 
 namespace Vaulty.Database.Models
 {
     internal class Group : Model
     {
-        internal override string _Table { get; set; } = "groups";
-        internal override Dictionary<string , Object> _Fields { get; set; } = new Dictionary<string , Object>();
+        internal static string table = "groups";
+        internal static Dictionary<string , Object> fields = new Dictionary<string , Object>();
 
-        internal string Name;
-        internal string Icon;
+        internal string name;
+        internal string icon;
         internal List<Identity> identities;
         
+        internal Group() { }
         internal Group(
             string name = null,
             int icon = 0,
@@ -29,16 +31,22 @@ namespace Vaulty.Database.Models
                 save
                 )
             {
-                _Fields["name"] = name;
-                _Fields["icon"] = icon;
+                fields["name"] = name;
+                fields["icon"] = icon;
                 Insert();
             }
         }
 
+        internal static void Setup()
+        {
+            Meta.table = table;
+            Meta.fields = fields;
+        }
+
         internal void Save()
         {
-            _Fields["name"] = Name;
-            _Fields["icon"] = Icon;
+            fields["name"] = name;
+            fields["icon"] = icon;
             Insert();
         }
     }

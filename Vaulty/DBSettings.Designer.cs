@@ -43,16 +43,15 @@
             this.lblTestResult = new System.Windows.Forms.Label();
             this.btnTestConn = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtHostField
             // 
             this.txtHostField.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.txtHostField.Location = new System.Drawing.Point(24, 43);
+            this.txtHostField.Location = new System.Drawing.Point(18, 35);
+            this.txtHostField.Margin = new System.Windows.Forms.Padding(2);
             this.txtHostField.Name = "txtHostField";
-            this.txtHostField.Size = new System.Drawing.Size(213, 28);
+            this.txtHostField.Size = new System.Drawing.Size(161, 24);
             this.txtHostField.TabIndex = 0;
             this.txtHostField.Tag = "hostField";
             // 
@@ -60,38 +59,43 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.label1.Location = new System.Drawing.Point(20, 20);
+            this.label1.Location = new System.Drawing.Point(15, 16);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(45, 20);
+            this.label1.Size = new System.Drawing.Size(37, 17);
             this.label1.TabIndex = 1;
             this.label1.Text = "Host";
             // 
             // btnSaveConfig
             // 
-            this.btnSaveConfig.Location = new System.Drawing.Point(178, 464);
+            this.btnSaveConfig.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnSaveConfig.Location = new System.Drawing.Point(220, 377);
+            this.btnSaveConfig.Margin = new System.Windows.Forms.Padding(2);
             this.btnSaveConfig.Name = "btnSaveConfig";
-            this.btnSaveConfig.Size = new System.Drawing.Size(113, 33);
+            this.btnSaveConfig.Size = new System.Drawing.Size(85, 27);
             this.btnSaveConfig.TabIndex = 2;
             this.btnSaveConfig.Text = "Save";
-            this.btnSaveConfig.UseVisualStyleBackColor = true;
+            this.btnSaveConfig.UseVisualStyleBackColor = false;
             this.btnSaveConfig.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.label2.Location = new System.Drawing.Point(20, 147);
+            this.label2.Location = new System.Drawing.Point(15, 119);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(86, 20);
+            this.label2.Size = new System.Drawing.Size(73, 17);
             this.label2.TabIndex = 4;
             this.label2.Text = "Username";
             // 
             // txtUsernameField
             // 
             this.txtUsernameField.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.txtUsernameField.Location = new System.Drawing.Point(24, 170);
+            this.txtUsernameField.Location = new System.Drawing.Point(18, 138);
+            this.txtUsernameField.Margin = new System.Windows.Forms.Padding(2);
             this.txtUsernameField.Name = "txtUsernameField";
-            this.txtUsernameField.Size = new System.Drawing.Size(213, 28);
+            this.txtUsernameField.Size = new System.Drawing.Size(161, 24);
             this.txtUsernameField.TabIndex = 3;
             this.txtUsernameField.Tag = "usernameField";
             // 
@@ -99,18 +103,20 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.label3.Location = new System.Drawing.Point(20, 80);
+            this.label3.Location = new System.Drawing.Point(15, 65);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(40, 20);
+            this.label3.Size = new System.Drawing.Size(34, 17);
             this.label3.TabIndex = 6;
             this.label3.Text = "Port";
             // 
             // txtPortField
             // 
             this.txtPortField.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.txtPortField.Location = new System.Drawing.Point(24, 103);
+            this.txtPortField.Location = new System.Drawing.Point(18, 84);
+            this.txtPortField.Margin = new System.Windows.Forms.Padding(2);
             this.txtPortField.Name = "txtPortField";
-            this.txtPortField.Size = new System.Drawing.Size(213, 28);
+            this.txtPortField.Size = new System.Drawing.Size(161, 24);
             this.txtPortField.TabIndex = 5;
             this.txtPortField.Tag = "portField";
             // 
@@ -118,26 +124,29 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.label4.Location = new System.Drawing.Point(20, 208);
+            this.label4.Location = new System.Drawing.Point(15, 169);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(83, 20);
+            this.label4.Size = new System.Drawing.Size(69, 17);
             this.label4.TabIndex = 8;
             this.label4.Text = "Password";
             // 
             // txtPasswordField
             // 
             this.txtPasswordField.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.txtPasswordField.Location = new System.Drawing.Point(24, 231);
+            this.txtPasswordField.Location = new System.Drawing.Point(18, 188);
+            this.txtPasswordField.Margin = new System.Windows.Forms.Padding(2);
             this.txtPasswordField.Name = "txtPasswordField";
-            this.txtPasswordField.Size = new System.Drawing.Size(213, 28);
+            this.txtPasswordField.Size = new System.Drawing.Size(161, 24);
             this.txtPasswordField.TabIndex = 7;
             this.txtPasswordField.Tag = "passwordField";
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(297, 464);
+            this.btnCancel.Location = new System.Drawing.Point(131, 377);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(113, 33);
+            this.btnCancel.Size = new System.Drawing.Size(85, 27);
             this.btnCancel.TabIndex = 9;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -147,18 +156,20 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.label5.Location = new System.Drawing.Point(20, 277);
+            this.label5.Location = new System.Drawing.Point(15, 225);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(127, 20);
+            this.label5.Size = new System.Drawing.Size(108, 17);
             this.label5.TabIndex = 11;
             this.label5.Text = "Database name";
             // 
             // txtDBField
             // 
             this.txtDBField.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.txtDBField.Location = new System.Drawing.Point(24, 300);
+            this.txtDBField.Location = new System.Drawing.Point(18, 244);
+            this.txtDBField.Margin = new System.Windows.Forms.Padding(2);
             this.txtDBField.Name = "txtDBField";
-            this.txtDBField.Size = new System.Drawing.Size(213, 28);
+            this.txtDBField.Size = new System.Drawing.Size(161, 24);
             this.txtDBField.TabIndex = 10;
             this.txtDBField.Tag = "dbField";
             // 
@@ -166,17 +177,19 @@
             // 
             this.lblTestResult.AutoSize = true;
             this.lblTestResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lblTestResult.Location = new System.Drawing.Point(3, 0);
-            this.lblTestResult.MaximumSize = new System.Drawing.Size(350, 0);
+            this.lblTestResult.Location = new System.Drawing.Point(15, 318);
+            this.lblTestResult.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblTestResult.MaximumSize = new System.Drawing.Size(262, 0);
             this.lblTestResult.Name = "lblTestResult";
-            this.lblTestResult.Size = new System.Drawing.Size(0, 20);
+            this.lblTestResult.Size = new System.Drawing.Size(0, 17);
             this.lblTestResult.TabIndex = 12;
             // 
             // btnTestConn
             // 
-            this.btnTestConn.Location = new System.Drawing.Point(24, 345);
+            this.btnTestConn.Location = new System.Drawing.Point(18, 280);
+            this.btnTestConn.Margin = new System.Windows.Forms.Padding(2);
             this.btnTestConn.Name = "btnTestConn";
-            this.btnTestConn.Size = new System.Drawing.Size(113, 33);
+            this.btnTestConn.Size = new System.Drawing.Size(85, 27);
             this.btnTestConn.TabIndex = 13;
             this.btnTestConn.Text = "Test";
             this.btnTestConn.UseVisualStyleBackColor = true;
@@ -184,29 +197,21 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(24, 464);
+            this.button1.Location = new System.Drawing.Point(18, 377);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(148, 33);
+            this.button1.Size = new System.Drawing.Size(111, 27);
             this.button1.TabIndex = 14;
             this.button1.Text = "Restore defaults";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.BtnRestoreDefaults_Click);
             // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.Controls.Add(this.lblTestResult);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(24, 395);
-            this.flowLayoutPanel1.MaximumSize = new System.Drawing.Size(1000, 45);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(386, 45);
-            this.flowLayoutPanel1.TabIndex = 15;
-            // 
             // DBSettings
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(422, 509);
-            this.Controls.Add(this.flowLayoutPanel1);
+            this.ClientSize = new System.Drawing.Size(316, 414);
+            this.Controls.Add(this.lblTestResult);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnTestConn);
             this.Controls.Add(this.label5);
@@ -221,11 +226,10 @@
             this.Controls.Add(this.btnSaveConfig);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtHostField);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "DBSettings";
             this.Text = "Database settings";
             this.Load += new System.EventHandler(this.DBSettings_Load);
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -248,6 +252,5 @@
         private System.Windows.Forms.Label lblTestResult;
         private System.Windows.Forms.Button btnTestConn;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }

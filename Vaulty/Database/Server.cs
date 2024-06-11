@@ -9,6 +9,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Vaulty.Database.Models;
 using Vaulty.Exceptions;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace Vaulty.Database
 {
@@ -35,18 +36,17 @@ namespace Vaulty.Database
 
         private const string PATH = "C:\\Users\\ovrsc\\source\\repos\\twister91\\vaulty\\Vaulty\\bin\\Debug\\";
         private const string CONFIG_FILE = "dbconfig.json";
-        private string _ConnString;
-        protected MySqlConnection _Conn;
+        private static string _ConnString;
+        protected static MySqlConnection _Conn;
         protected abstract string _Query { get; set; }
         protected MySqlCommand _QueryExec;
         protected abstract MySqlDataReader _DataReader { get; set; }
 
-        protected void SetupConfig()
+        protected static void SetupConfig()
         {
             string configFile = File.ReadAllText(CONFIG_FILE);
             ConnProps config = JsonSerializer.Deserialize<ConnProps>(configFile);
-            _ConnString = $"server={config.Host},port={config.Port},user={config.Username}," +
-                $"password={config.Password},database={config.Db}";
+            _ConnString = $"server={config.Host};port={config.Port};uid={config.Username};pwd={config.Password};database={config.Db}";
         }
 
         internal static void SetConfig(
@@ -84,9 +84,28 @@ namespace Vaulty.Database
             };
         }
 
-        internal void Test()
+        internal static void Test(
+                string host = "",
+                string port = "",
+                string username = "",
+                string password = "",
+                string db = ""
+            )
         {
-            SetupConfig();
+            if (
+                host.Equals("") &&
+                port.Equals("") &&
+                username.Equals("") &&
+                password.Equals("") &&
+                db.Equals("")
+                )
+            {
+                SetupConfig();
+            }
+            else
+            {
+                _ConnString = $"server={host};port={port};uid={username};pwd={password};database={db}";
+            }
             try
             {
                 _Conn = new MySqlConnection(_ConnString);
@@ -97,8 +116,7 @@ namespace Vaulty.Database
                 throw new DBConnException();
             }
         }
-
-        internal void CloseConn()
+        internal static void CloseConn()
         {
             if (_Conn != null)
             {

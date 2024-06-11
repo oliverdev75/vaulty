@@ -15,47 +15,43 @@ namespace Vaulty.Database
 {
     internal abstract class Model
     {
-
-        internal abstract string Table { get; set; }
-        internal abstract Dictionary<string, Object> Fields { get; set; }
-
-        internal void Insert()
+        protected static void Insert()
         {
-            Builder build = new Builder(Table, Fields);
+            Builder build = new Builder(Meta.table, Meta.fields);
             build.Insert();
         }
 
-        internal Builder Where(string field, string value)
+        internal static Builder Where(string field, string value)
         {
-            Builder build = new Builder(Table, Fields);
+            Builder build = new Builder(Meta.table, Meta.fields);
             build.Where(field, value);
             return build;
         }
 
-        internal Builder Where(string field, string condOperator, string value)
+        internal static Builder Where(string field, string condOperator, string value)
         {
-            Builder build = new Builder(Table, Fields);
+            Builder build = new Builder(Meta.table, Meta.fields);
             build.OrWhere(field, condOperator, value);
             return build;
         }        
 
-        internal Builder OrWhere(string field, string value)
+        internal static Builder OrWhere(string field, string value)
         {
-            Builder build = new Builder(Table, Fields);
+            Builder build = new Builder(Meta.table, Meta.fields);
             build.OrWhere(field, value);
             return build;
         }
 
-        internal Builder OrWhere(string field, string condOperator, string value)
+        internal static Builder OrWhere(string field, string condOperator, string value)
         {
-            Builder build = new Builder(Table, Fields);
+            Builder build = new Builder(Meta.table, Meta.fields);
             build.OrWhere(field, condOperator, value);
             return build;
         }
 
-        internal Builder OrderBy(string field, string type = "asc")
+        internal static Builder OrderBy(string field, string type = "asc")
         {
-            Builder build = new Builder(Table, Fields);
+            Builder build = new Builder(Meta.table, Meta.fields);
             build.OrderBy(field, type);
             return build;
         }

@@ -11,8 +11,8 @@ namespace Vaulty.Database.Models
 {
     internal class Identity : Model
     {
-        internal override string Table { get; set; } = "identities";
-        internal override Dictionary<string, Object> Fields { get; set; } = new Dictionary<string, Object>();
+        internal static string table = "identities";
+        internal static Dictionary<string, Object> fields = new Dictionary<string, Object>();
 
         string title;
         string username;
@@ -21,6 +21,7 @@ namespace Vaulty.Database.Models
         string note;
         Group group;
         
+        internal Identity() { }
         internal Identity(
             string title = null,
             string username = null,
@@ -39,22 +40,27 @@ namespace Vaulty.Database.Models
                 save
                 )
             {
-                Fields["title"] = title;
-                Fields["username"] = username;
-                Fields["password"] = password;
-                Fields["website"] = website;
-                Fields["note"] = note;
+                fields["title"] = title;
+                fields["username"] = username;
+                fields["password"] = password;
+                fields["website"] = website;
+                fields["note"] = note;
                 Insert();
             }
         }
 
+        internal static void Setup()
+        {
+            Meta.SetMeta(table, fields);
+        }
+
         internal void Save()
         {
-            Fields["title"] = title;
-            Fields["username"] = username;
-            Fields["password"] = password;
-            Fields["website"] = website;
-            Fields["note"] = note;
+            fields["title"] = title;
+            fields["username"] = username;
+            fields["password"] = password;
+            fields["website"] = website;
+            fields["note"] = note;
             Insert();
         }
     }
