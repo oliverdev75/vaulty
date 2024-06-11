@@ -35,5 +35,11 @@ namespace Vaulty
             Login login = new Login();
             login.Show();
         }
+
+        private void btnPanel_Click(object sender, EventArgs e)
+        {
+            IdentitiesPanel panel = new IdentitiesPanel();
+            panel.Show();
+        }
     }
 }

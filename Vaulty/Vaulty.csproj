@@ -116,12 +116,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account\Panel.cs">
+    <Compile Include="Account\IdentitiesPanel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Account\Panel.Designer.cs">
-      <DependentUpon>Panel.cs</DependentUpon>
+    <Compile Include="Account\IdentitiesPanel.Designer.cs">
+      <DependentUpon>IdentitiesPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Account\Session.cs" />
     <Compile Include="Account\Signup.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,6 +151,12 @@
     <Compile Include="Account\Login.Designer.cs">
       <DependentUpon>Login.cs</DependentUpon>
     </Compile>
+    <Compile Include="Identities\Create.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Identities\Create.Designer.cs">
+      <DependentUpon>Create.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -162,14 +169,17 @@
     <EmbeddedResource Include="Account\Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Account\Panel.resx">
-      <DependentUpon>Panel.cs</DependentUpon>
+    <EmbeddedResource Include="Account\IdentitiesPanel.resx">
+      <DependentUpon>IdentitiesPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Account\Signup.resx">
       <DependentUpon>Signup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DBSettings.resx">
       <DependentUpon>DBSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Identities\Create.resx">
+      <DependentUpon>Create.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainMenu.resx">
       <DependentUpon>MainMenu.cs</DependentUpon>
@@ -198,8 +208,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Identities\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

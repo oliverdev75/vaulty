@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Vaulty.Database.Models;
+using Vaulty.Account;
 
 namespace Vaulty
 {
@@ -32,6 +33,7 @@ namespace Vaulty
                     Dictionary<string, object> user = coincidences[0];
                     Console.WriteLine("Name: " + user["name"]);
                     Console.WriteLine("Username: " + user["username"]);
+                    Session.Enable((int) user["id"], (string) user["name"], (string) user["username"]);
                     this.Close();
                 }
             }
@@ -43,12 +45,7 @@ namespace Vaulty
 
         private void btnResetPwd_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void Login_Load(object sender, EventArgs e)
-        {
-
+            throw new NotImplementedException();
         }
     }
 }
