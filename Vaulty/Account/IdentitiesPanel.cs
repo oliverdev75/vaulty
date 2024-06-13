@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Vaulty.Database.Models;
-using Vaulty.Identities
+using Vaulty.Identities;
 
 namespace Vaulty.Account
 {
@@ -41,7 +41,8 @@ namespace Vaulty.Account
 
         private void btnCreateIdentity_Click(object sender, EventArgs e)
         {
-            Identities.Create 
+            Identities.Create createForm = new Identities.Create();
+            createForm.Show();
         }
     }
 }
